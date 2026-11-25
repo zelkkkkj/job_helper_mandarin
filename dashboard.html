@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>实习申请助手 · 工作台</title><link rel="stylesheet" href="style.css"></head>
+<body><main class="workspace"><header><div><div class="eyebrow">INTERNSHIP HELPER · HANDSHAKE + CAREER SITES</div><h1>下一份实习，有条理地找。</h1><p>收集机会，核对资格，把申请一步步推进。</p></div><span class="pill">Summer 2027 · 可在设置修改</span></header>
+<nav aria-label="工作台"><button data-panel="jobsPanel">岗位列表</button><button data-panel="settingsPanel" class="secondary">个人资料与规则</button><button data-panel="helpPanel" class="secondary">使用说明</button></nav>
+<div id="message" role="status" aria-live="polite"></div>
+<section id="jobsPanel" class="panel">
+  <div class="toolbar"><button id="refresh">读取已配置公司岗位</button><button id="export" class="secondary">导出岗位 JSON</button><label class="fileButton">导入岗位 JSON<input id="import" type="file" accept=".json,application/json" hidden></label></div>
+  <div class="filters"><input id="search" type="search" placeholder="搜索公司、标题或地点" aria-label="搜索岗位"><select id="grade" aria-label="按匹配筛选"><option value="all">所有匹配结果</option><option value="potential">方向匹配 · 待核对</option><option value="review">需要进一步查看</option><option value="skip">规则排除</option></select><select id="status" aria-label="按进度筛选"><option value="all">所有申请进度</option><option value="saved">已保存</option><option value="preparing">准备中</option><option value="applied">已申请</option><option value="interview">面试中</option><option value="rejected">已拒绝</option><option value="withdrawn">已放弃</option></select></div>
+  <p id="summary" class="small"></p><div id="jobs"></div>
+</section>
+<section id="settingsPanel" class="panel" hidden><form id="settings">
+  <h2>先确认你的资料</h2><p>已填学校、专业和毕业年份供你核对。姓名、联系方式由你输入；不会推断你的工作许可状态。</p>
+  <div class="grid">
+    <label>First name<input name="firstName" autocomplete="given-name"></label><label>Last name<input name="lastName" autocomplete="family-name"></label>
+    <label>Full name<input name="fullName" autocomplete="name"></label><label>Email<input name="email" type="email" autocomplete="email"></label>
+    <label>Phone<input name="phone" type="tel" autocomplete="tel"></label><label>LinkedIn URL<input name="linkedin" type="url"></label>
+    <label>Portfolio / personal website<input name="website" type="url"></label><label>School<input name="school"></label>
+    <label>Major<input name="major"></label><label>预计毕业年份<input name="graduationYear" type="number" min="2020" max="2045" required></label>
+  </div>
+  <h2>筛选规则</h2><div class="grid">
+    <label>目标实习年份<input name="targetYear" type="number" min="2020" max="2045" required></label>
+    <label>是否需要 sponsorship（用于提示，不会填入申请表）<select name="needsSponsorship"><option value="unknown">未确认 / 需要按问题区分</option><option value="yes">需要</option><option value="no">不需要</option></select></label>
+    <label class="wide">方向关键词（英文逗号分隔）<input name="keywords"></label>
+    <label>偏好地点（英文逗号分隔；空白表示不限）<input name="locations"></label><label>排除公司（英文逗号分隔；名称精确匹配）<input name="excludedCompanies"></label>
+    <label class="check wide"><input name="internshipsOnly" type="checkbox">仅筛选标题明确写 Intern / Internship / Summer Analyst / Summer Associate 的岗位</label>
+  </div>
+  <h2>公司岗位来源</h2><p>每行一个公司招聘系统标识。只读取你在此添加的来源；没有预置公司的岗位推荐。</p>
+  <textarea name="sources" rows="5" placeholder="greenhouse:公司标识&#10;lever:公司标识&#10;lever-eu:公司标识" aria-label="公司岗位来源"></textarea>
+  <p class="small">例如官网地址为 https://job-boards.greenhouse.io/某个标识，则输入 greenhouse:某个标识。地址为 https://jobs.lever.co/某个标识，则输入 lever:某个标识。这里只接受字母、数字、下划线和短横线。其他官网用插件读取当前详情。</p>
+  <button type="submit">保存资料和规则</button><p class="small">资料和岗位保存在此浏览器的本地扩展存储中。没有账号、云端同步或 AI API；填表会把对应资料写入你当前打开的网页。导出的 JSON 只含岗位与申请备注，不含个人资料。</p>
+</form></section>
+<section id="helpPanel" class="panel prose" hidden><h2>从 Handshake 开始</h2><ol><li>先在“个人资料与规则”保存基本信息和筛选方向。</li><li>自己登录 Handshake，在独立详情页打开一个岗位。点击浏览器工具栏里的本插件，再点“读取当前岗位并筛选”。</li><li>在岗位列表核对读取到的标题、公司、正文和原文提示。Handshake 未提供结构化数据时，公司与地点可能为空，可在岗位卡片中修正。请不要读取搜索结果页。</li><li>点“打开岗位 / 申请入口”，在网页里进入申请表，再点插件的“填写已保存的基本资料”。</li><li>核对每项内容，自己上传简历、填写问答与工作许可问题，并点击网站提交按钮。看到网站成功提示后，再在这里标记“已申请”。</li></ol>
+<h2>批量找公司官网岗位</h2><p>配置 Greenhouse / Lever 公司标识后，点击“读取已配置公司岗位”。每次按需读取并合并、去重，保留原有申请状态和备注。支持 Lever 全球区和欧洲区。暂不支持 Handshake 后台批量搜索、Workday 批量读取、跨域嵌入表单、自动翻页填表或自动上传简历。</p>
+<h2>如何理解筛选结果</h2><p>匹配分是标题、年份、方向和地点的规则分数，不是录取概率。毕业范围、学历、年份、工作许可、CPT/OPT、sponsorship、ITAR 只做关键词提示，可能漏检、误判或受否定句影响；“没有提示”不能证明符合条件。每个岗位仍要核对完整原文。当前规则偏向召回，只排除你列出的公司和明显不符合标题规则的岗位；排除项仍可查看。</p>
+<h2>填写范围</h2><p>只尝试识别空白的姓名、邮箱、电话、LinkedIn、个人网站、学校、专业等基本字段。不会改已有答案，不会勾选承诺，不会回答工作许可与人口统计问题，也不会点击任何提交按钮。网站的自定义组件可能不接受自动填写，请检查页面上的实际内容。</p>
+<h2>数据与更新</h2><p>“最近读取”仅代表获取时间，无法证明岗位仍开放。公司关闭的岗位不会自动删除。导入导出可备份岗位进度；卸载扩展可能清除本地资料。不要在备注里存密码或证件号码。</p>
+<h2>技术资料</h2><p><a href="https://developer.chrome.com/docs/extensions/develop/concepts/activeTab" target="_blank" rel="noopener noreferrer">Chrome 当前页面访问说明</a> · <a href="https://docs.greenhouse.io/job-board.html" target="_blank" rel="noopener noreferrer">Greenhouse API</a> · <a href="https://github.com/lever/postings-api" target="_blank" rel="noopener noreferrer">Lever API</a></p>
+</section></main><script src="core.js"></script><script src="feeds.js"></script><script src="dashboard.js"></script></body></html>
